@@ -1,0 +1,24 @@
+body {
+    background-color: #121212; /* Dark mode background color */
+    color: #ffffff; /* Text color for dark mode */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    text-align: center;
+}
+header {
+    position: fixed;
+    text-align: center;
+    content: center;
+    top: 0;
+    width: 100%;
+    z-index: 100;  
+    display: flex;
+    flex-direction: row;/* Optional: this ensures the header stays on top of other elements */
+}

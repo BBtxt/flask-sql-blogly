@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{user.first_name}} {{user.last_name}}</h1>
+    <p>Welcome to the user page</p>
+    <div>
+        <h2>{{ user.first_name }}</h2>
+        <p>{{ user.id }}</p>
+        <img src={{user.image_url}} alt="user_img"
+        height="1.5rem">
+    </div>
+    <form method="POST">
+    <input type="submit" value="Edit User" />
+    </form>
+{% endblock %}

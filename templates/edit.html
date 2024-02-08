@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <form method="POST">
+        <p>First Name:     <input name="first_name" placeholder={{user.first_name}}></p>
+        <p>Last Name:  <input name="last_name" placeholder={{user.last_name}}></p>
+        <p>Profile photo:   <input name="image_url" placeholder="url"></p>
+        <button>Save</button>
+      </form>
+      <form action="/delete/{{user.id}}" method="POST">
+        <input type="hidden" name="user_id" value="{{ user.id }}">
+        <input type="submit" value="Delete">
+    </form>
+</div> 
+{% endblock %}
