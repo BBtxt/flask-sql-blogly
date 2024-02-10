@@ -2,14 +2,19 @@
 
 {% block content %}
     <h1>{{user.first_name}} {{user.last_name}}</h1>
-    <p>Welcome to the user page</p>
     <div>
         <h2>{{ user.first_name }}</h2>
         <p>{{ user.id }}</p>
-        <img src={{user.image_url}} alt="user_img"
+        <img src="{{user.image_url}}" alt="user_img"
         height="1.5rem">
+        {{user.image_url}}
+        https://api.iconify.design/ri:account-pin-box-fill.svg
     </div>
     <form method="POST">
     <input type="submit" value="Edit User" />
     </form>
+    <form action=" /{{user.id}}/posts/new">
+    <input type="submit" value="Make a Post" />
+    </form>
+    
 {% endblock %}

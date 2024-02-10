@@ -43,7 +43,7 @@ class Posts(db.Model):
     created_at = db.Column(db.DateTime,
                           nullable=False,
                           default=datetime.now())
-    db.ForeignKey('users.id')
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     
     users = db.relationship('Users', backref='posts')
         
