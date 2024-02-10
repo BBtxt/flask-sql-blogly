@@ -94,13 +94,15 @@ def new_post_post(id):
 def post(u_id, post_id): 
     user = Users.query.get_or_404(u_id)
     post = Posts.query.get_or_404(post_id)
-    return render_template('post.html', post=post, user=user)
+    date = post.created_at.strftime("%B %d, %Y")
+    return render_template('post.html', post=post, user=user, date=date)
 
 @app.route("/<int:u_id>/posts/<int:post_id>/edit")
 def edit_post(u_id, post_id):
     user = Users.query.get_or_404(u_id)
     post = Posts.query.get_or_404(post_id)
     return render_template('edit_post.html', user=user, post=post)
+
 @app.route("/<int:u_id>/posts/<int:post_id>/edit", methods=["POST"])
 def edit_post_post(u_id, post_id):
     post = Posts.query.get_or_404(post_id)
@@ -108,5 +110,7 @@ def edit_post_post(u_id, post_id):
     post.content = request.form['content']
     db.session.commit()
     return redirect(f'/{u_id}/posts/{post_id}')
+
+
 
 

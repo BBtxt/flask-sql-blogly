@@ -3,21 +3,10 @@
 {% block content %}
     <h1>{{user.first_name}} {{user.last_name}}</h1>
     <div>
-        <h2>{{ user.first_name }}</h2>
-        <p>{{ user.id }}</p>
-        <img src="{{user.image_url}}" alt="user_img"
-        height="1.5rem">
-        {{user.image_url}}
-        https://api.iconify.design/ri:account-pin-box-fill.svg
-        <form method="POST">
-        <input type="submit" value="Edit User" />
-        </form>
-        <form action=" /{{user.id}}/posts/new">
-        <input type="submit" value="Make a Post" />
-        </form>
-    </div>
-    <div>
         <h2>Posts</h2>
+        {% if user.posts == [] %}
+            <p> {{user.first_name}} has no posts yet</p>
+        {% endif %}
         <ul>
             {% for post in user.posts %}
                 <li>
@@ -25,6 +14,16 @@
                 </li>
             {% endfor %}
         </ul>
+    </div>
+    <div>
+        <img src="{{user.image_url}}" alt="user_img"
+        height="1.5rem">
+        <form method="POST">
+        <input type="submit" value="Edit User" />
+        </form>
+        <form action=" /{{user.id}}/posts/new">
+        <input type="submit" value="Make a Post" />
+        </form>
     </div>
     
 {% endblock %}
