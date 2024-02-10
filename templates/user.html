@@ -9,12 +9,22 @@
         height="1.5rem">
         {{user.image_url}}
         https://api.iconify.design/ri:account-pin-box-fill.svg
+        <form method="POST">
+        <input type="submit" value="Edit User" />
+        </form>
+        <form action=" /{{user.id}}/posts/new">
+        <input type="submit" value="Make a Post" />
+        </form>
     </div>
-    <form method="POST">
-    <input type="submit" value="Edit User" />
-    </form>
-    <form action=" /{{user.id}}/posts/new">
-    <input type="submit" value="Make a Post" />
-    </form>
+    <div>
+        <h2>Posts</h2>
+        <ul>
+            {% for post in user.posts %}
+                <li>
+                    <a href="/{{user.id}}/posts/{{post.id}}">{{ post.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
     
 {% endblock %}

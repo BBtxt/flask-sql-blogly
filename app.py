@@ -48,7 +48,8 @@ def new_user():
 @app.route('/<int:id>')
 def user(id):
     user = Users.query.get_or_404(id)
-    return render_template('user.html', user=user)
+    posts = Posts.query.filter_by(user_id=id).all()
+    return render_template('user.html', user=user, posts=posts)
 
 @app.route('/<int:id>', methods=["POST"])
 def go_to_edit(id):
@@ -88,3 +89,9 @@ def new_post_post(id):
     db.session.add(post)
     db.session.commit()
     return redirect(f'/{id}')
+
+@app.route("/<int:u_id>/posts/<int:post_id>")
+def post(u_id, post_id): 
+    user = Users.query.get_or_404(u_id)
+    post = Posts.query.get_or_404(post_id)
+    return render_template('post.html', post=post, user=user)
