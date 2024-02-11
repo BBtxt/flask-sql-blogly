@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, render_template
 from flask_migrate import Migrate
-from models import db, connect_db, Users, Posts
+from models import db, connect_db, Users, Posts, Post_tag, Tags
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost/blogly'
@@ -51,6 +51,7 @@ def user(id):
     posts = Posts.query.filter_by(user_id=id).all()
     return render_template('user.html', user=user, posts=posts)
 
+
 @app.route('/<int:id>', methods=["POST"])
 def go_to_edit(id):
     return redirect(f'/edit/{id}')
@@ -59,6 +60,8 @@ def go_to_edit(id):
 def edit_user(id):
     user = Users.query.get_or_404(id)
     return render_template('edit.html', user=user)
+
+###########################Posts###############################
 
 @app.route('/edit/<int:id>', methods=["POST"])
 def edit_user_post(id):
@@ -79,14 +82,29 @@ def delete_user(id):
 @app.route('/<int:id>/posts/new')
 def new_post(id):
     user = Users.query.get_or_404(id)
-    return render_template('new_post.html', user=user)
+    tags = Tags.query.all()
+    return render_template('new_post.html', user=user, tags=tags)
 
 @app.route('/<int:id>/posts/new', methods=["POST"])
 def new_post_post(id):
+    ### Add post to database
     title = request.form['title']
     content = request.form['content']
     post = Posts(title=title, content=content, user_id=id)
     db.session.add(post)
+    db.session.commit()
+    
+    ### Add tag to database
+    post_id = post.id  # get the post ID after committing the session
+
+    # Get the list of tag IDs from the form data
+    tag_ids = request.form.getlist('tags')
+
+    # Create a new PostTag for each tag
+    for tag_id in tag_ids:
+        post_tag = Post_tag(post_id=post_id, tag_id=tag_id)
+        db.session.add(post_tag)
+
     db.session.commit()
     return redirect(f'/{id}')
 
@@ -95,7 +113,8 @@ def post(u_id, post_id):
     user = Users.query.get_or_404(u_id)
     post = Posts.query.get_or_404(post_id)
     date = post.created_at.strftime("%B %d, %Y")
-    return render_template('post.html', post=post, user=user, date=date)
+    post_tags = Post_tag.query.filter_by(post_id=post_id).all()
+    return render_template('post.html', post=post, user=user, date=date, post_tags=post_tags)
 
 @app.route("/<int:u_id>/posts/<int:post_id>/edit")
 def edit_post(u_id, post_id):
@@ -118,5 +137,23 @@ def delete_post(u_id, post_id):
     db.session.commit()
     return redirect(f'/{u_id}')
 
+###########################Tags###############################
 
 
+
+@app.route("/tags")
+def all_tags():
+    tags = Tags.query.all()
+    return render_template('tags.html', tags=tags)
+
+@app.route("/tags/new")
+def create_tag():
+    current_tags = Tags.query.all()
+    return render_template('new_tag.html', current_tags=current_tags)
+
+@app .route("/tags/new", methods=["POST"])
+def create_tag_post():
+    tag = Tags(name=request.form['name'])
+    db.session.add(tag)
+    db.session.commit()
+    return redirect('/tags')

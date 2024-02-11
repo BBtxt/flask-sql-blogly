@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        <h1>New Tag</h1>
+        <form method="POST">
+            <p>Tag Name:     <input name="name" placeholder="tag name"></p>
+            <button>Save</button>
+            <button><a href="/tags">Back</a></button>
+        </form>
+    </div>
+    <div>
+        <div>
+            <h2>Current Tags</h2>
+            {% if tags == [] %}
+                <p>No tags yet</p>
+            {% endif %}
+            <ul>
+                {% for tag in current_tags %}
+                    <li>
+                        <a href="/tags/{{tag.id}}">{{tag.name}}</a>
+                    </li>
+                {% endfor %}
+        </div>
+    </div>
+{% endblock %}

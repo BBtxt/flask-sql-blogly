@@ -11,6 +11,12 @@
             <label for="content">Content</label>
             <textarea class="form-control" id="content" name="content" required></textarea> 
         </div>
+        <div>
+            {% for tag in tags %}
+            <input type="radio" name="tag" value="{{ tag.id }}">
+            <label for="{{ tag.id }}">{{ tag.name }}</label><br>
+        {% endfor %}
+        </div>
         <input type="hidden" name="user_id" value="{{ user.id }}">
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

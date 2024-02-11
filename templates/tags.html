@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Tags</h1>
+    <div>
+        {% if tags == [] %}
+            <p>No tags yet</p>
+        {% endif %}
+        <ul>
+            {% for tag in tags %}
+                <li>
+                    {{tag.name}}
+                </li>
+            {% endfor %}
+        </ul>
+        <form action="/tags/new">
+            <input type="submit" value="New Tag" />
+        </form>
+    </div>
+ 
+{% endblock %}
