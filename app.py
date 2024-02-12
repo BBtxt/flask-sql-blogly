@@ -87,24 +87,10 @@ def new_post(id):
 
 @app.route('/<int:id>/posts/new', methods=["POST"])
 def new_post_post(id):
-    ### Add post to database
     title = request.form['title']
     content = request.form['content']
     post = Posts(title=title, content=content, user_id=id)
     db.session.add(post)
-    db.session.commit()
-    
-    ### Add tag to database
-    post_id = post.id  # get the post ID after committing the session
-
-    # Get the list of tag IDs from the form data
-    tag_ids = request.form.getlist('tags')
-
-    # Create a new PostTag for each tag
-    for tag_id in tag_ids:
-        post_tag = Post_tag(post_id=post_id, tag_id=tag_id)
-        db.session.add(post_tag)
-
     db.session.commit()
     return redirect(f'/{id}')
 
@@ -140,7 +126,6 @@ def delete_post(u_id, post_id):
 ###########################Tags###############################
 
 
-
 @app.route("/tags")
 def all_tags():
     tags = Tags.query.all()
@@ -157,3 +142,19 @@ def create_tag_post():
     db.session.add(tag)
     db.session.commit()
     return redirect('/tags')
+
+@app.route("/<int:u_id>/posts/<int:post_id>/add_tags")
+def add_tags(u_id, post_id):
+    post = Posts.query.get_or_404(post_id)
+    tags = Tags.query.all()
+    return render_template('add_tags.html', post=post, tags=tags)
+
+@app.route("/<int:u_id>/posts/<int:post_id>/add_tags", methods=["POST"])
+def add_tags_post(u_id, post_id):
+    tags = request.form.getlist('tags')
+    for tag in tags:
+        post_tag = Post_tag(post_id=post_id, tag_id=tag)
+        db.session.add(post_tag)
+        db.session.commit()
+        
+    return redirect(f'/{u_id}/posts/{post_id}')

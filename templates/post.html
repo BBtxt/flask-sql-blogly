@@ -9,6 +9,8 @@
                 <a href="/tags/{{tag.id}}">{{tag.name}}</a>
             {% endfor %}    
         <p>Created on: {{ date}} by: {{user.first_name}}</p>
+        <form action = "/{{user.id}}/posts/{{post.id}}/add_tags">
+            <input type="submit" value="AddTags">
         <form action="/{{user.id}}/posts/{{post.id}}/edit">
             <input type="submit" value="Edit Post" />
         </form>
